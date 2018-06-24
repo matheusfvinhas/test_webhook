@@ -7,7 +7,9 @@ FactoryBot.define do
     name { Faker::Lorem.word }
     full_name { Faker::Lorem.word }
     default { Faker::Lorem.word }
+
     private { Faker::Boolean.boolean }
+
     html_url { Faker::Internet.url('example.com') }
     description { Faker::Lorem.word }
     fork { Faker::Boolean.boolean }

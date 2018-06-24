@@ -8,17 +8,16 @@ class WebhookController < ApplicationController
 
   def events
     @events = Event.events(params[:id])
+    raise ActiveRecord::RecordNotFound, 'Not Found' if @events.empty?
     json_response(@events)
   end
 
   def events_statistics
-    @events = Issue.statistics
-    json_response(@events)
+    json_response('assigned': Issue.statistics_assigned, 'unassigned': Issue.statistics_grouped)
   end
 
   def events_statistics_grouped
-    @events = Issue.statistics_grouped
-    json_response(@events)
+    json_response('assigned': Issue.statistics_assigned, 'unassigned': Issue.statistics_unassigned)
   end
 
   private

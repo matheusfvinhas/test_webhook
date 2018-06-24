@@ -14,7 +14,7 @@ FactoryBot.define do
     title { Faker::Lorem.word }
     association :user, factory: :user
     association :assignee, factory: :user
-    state %w[closed open].sample
+    state %w[open].sample
     locked { Faker::Boolean.boolean }
     milestone nil
     comments { Faker::Number.number(10) }

@@ -11,27 +11,31 @@ RSpec.describe WebhookController, type: :request do
     context 'when events exists' do
       it 'returns status code 200' do
         expect(response).to have_http_status(200)
-      end      
+      end
     end
   end
 
   describe 'GET /statistics' do
-    before { get "/statistics" }
+    before { get '/statistics' }
 
     context 'when statistics exists' do
       it 'returns status code 200' do
         expect(response).to have_http_status(200)
-      end      
+      end
+
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end
     end
   end
 
   describe 'GET /statistics_grouped' do
-    before { get "/statistics_grouped" }
+    before { get '/statistics_grouped' }
 
     context 'when statistics_grouped exists' do
       it 'returns status code 200' do
         expect(response).to have_http_status(200)
-      end      
+      end
     end
   end
 
@@ -71,11 +75,11 @@ RSpec.describe WebhookController, type: :request do
         },
         "labels": [
           {
-            "id": 972569512,
-            "node_id": "MDU6TGFiZWw5NzI1Njk1MTI=",
-            "url": "https://api.github.com/repos/matheusfvinhas/test_webhook/labels/good%20first%20issue",
-            "name": "good first issue",
-            "color": "7057ff",
+            "id": 972_569_512,
+            "node_id": 'MDU6TGFiZWw5NzI1Njk1MTI=',
+            "url": 'https://api.github.com/repos/matheusfvinhas/test_webhook/labels/good%20first%20issue',
+            "name": 'good first issue',
+            "color": '7057ff',
             "default": true
           }
         ],
@@ -246,13 +250,12 @@ RSpec.describe WebhookController, type: :request do
       }
     }
 
-
     context 'when the request is valid' do
       before { post '/webhook', params: params }
 
       it 'returns status code 200' do
         expect(response).to have_http_status(200)
       end
-    end    
+    end
   end
 end

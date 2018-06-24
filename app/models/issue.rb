@@ -8,11 +8,15 @@ class Issue < ApplicationRecord
   has_many :issue_assignees
   has_many :assignees, through: :issue_assignees, source: :user
 
-  def self.statistics
-    group(:state, :assignee_id).count(:state)
+  def self.statistics_assigned
+    where('assignee_id is not null').group(:state).count(:state)
+  end
+
+  def self.statistics_unassigned
+    where('assignee_id is null').group(:state).count(:state)
   end
 
   def self.statistics_grouped
-    group(:state).count(:state)
+    where('assignee_id is null').count(:state)
   end
 end
