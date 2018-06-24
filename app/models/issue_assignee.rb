@@ -2,5 +2,5 @@
 
 class IssueAssignee < ApplicationRecord
   belongs_to :issue
-  belongs_to :assignee, class_name: 'User'
+  belongs_to :user
 end

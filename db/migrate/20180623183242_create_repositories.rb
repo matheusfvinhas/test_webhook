@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateRepositories < ActiveRecord::Migration[5.2]
   def change
     create_table :repositories, id: false do |t|
@@ -66,7 +68,7 @@ class CreateRepositories < ActiveRecord::Migration[5.2]
       t.boolean :has_pages
       t.integer :forks_count
       t.string :mirror_url
-      t.string :archived
+      t.boolean :archived
       t.integer :open_issues_count
       t.string :license
       t.integer :forks

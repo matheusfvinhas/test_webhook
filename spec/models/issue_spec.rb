@@ -3,5 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe Issue, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it { should belong_to(:user) }
+  it { should belong_to(:assignee).class_name('User') }
+  it { should have_many(:events) }
+  it { should have_and_belong_to_many(:labels) }
+  it { should have_many(:assignees).through(:issue_assignees).source(:user) }
 end

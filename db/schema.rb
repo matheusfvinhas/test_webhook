@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 2018_06_23_183925) do
     t.integer "issue_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["id"], name: "index_events_on_id", unique: true
     t.index ["issue_id"], name: "index_events_on_issue_id"
     t.index ["repository_id"], name: "index_events_on_repository_id"
     t.index ["sender_id"], name: "index_events_on_sender_id"
@@ -33,14 +34,13 @@ ActiveRecord::Schema.define(version: 2018_06_23_183925) do
     t.index ["user_id"], name: "index_issue_assignees_on_user_id"
   end
 
-  create_table "issues", id: false, force: :cascade do |t|
+  create_table "issues", force: :cascade do |t|
     t.string "url"
     t.string "repository_url"
     t.string "labels_url"
     t.string "comments_url"
     t.string "events_url"
     t.string "html_url"
-    t.integer "id"
     t.string "node_id"
     t.integer "number"
     t.string "title"
@@ -69,8 +69,7 @@ ActiveRecord::Schema.define(version: 2018_06_23_183925) do
     t.index ["label_id"], name: "index_issues_labels_on_label_id"
   end
 
-  create_table "labels", id: false, force: :cascade do |t|
-    t.integer "id"
+  create_table "labels", force: :cascade do |t|
     t.string "node_id"
     t.string "url"
     t.string "name"
@@ -81,8 +80,7 @@ ActiveRecord::Schema.define(version: 2018_06_23_183925) do
     t.index ["id"], name: "index_labels_on_id", unique: true
   end
 
-  create_table "repositories", id: false, force: :cascade do |t|
-    t.integer "id"
+  create_table "repositories", force: :cascade do |t|
     t.string "node_id"
     t.string "name"
     t.string "full_name"
@@ -147,7 +145,7 @@ ActiveRecord::Schema.define(version: 2018_06_23_183925) do
     t.boolean "has_pages"
     t.integer "forks_count"
     t.string "mirror_url"
-    t.string "archived"
+    t.boolean "archived"
     t.integer "open_issues_count"
     t.string "license"
     t.integer "forks"
