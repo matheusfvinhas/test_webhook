@@ -1,24 +1,12 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+- Create a public repo
+- Create a issues webhook
+- Run npm i -g ngrok
+- Run ngrok http 3000
+- Get ngrok url and set it to your webhook
+- Run bundle install
+- Run rails db:migrate
+- Run rails s
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Now any change to your repo issues will be sent to your API ;)
