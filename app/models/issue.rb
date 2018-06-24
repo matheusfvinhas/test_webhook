@@ -13,6 +13,6 @@ class Issue < ApplicationRecord
   end
 
   def self.statistics_grouped
-    group(:state).having('assignee_id > ?', 0).count(:state)
+    group(:state).count(:state)
   end
 end

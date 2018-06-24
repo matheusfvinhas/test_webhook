@@ -83,9 +83,9 @@ class WebhookController < ApplicationController
   end
 
   def create_issue
-    @issue = Issue.create_with(issue_params).find_or_create_by!(id: params[:issue][:id])
+    @issue = Issue.create_with(issue_params).find_or_create_by(id: params[:issue][:id])
     # update state and other outer attributes
-    @issue.update!(issue_params)
+    @issue.update(issue_params)
 
     @issue.user = create_user
     @issue.labels = create_labels
@@ -112,7 +112,7 @@ class WebhookController < ApplicationController
   end
 
   def create_repository
-    @repository = Repository.create_with(repository_params).find_or_create_by!(id: params[:repository][:id])
+    @repository = Repository.create_with(repository_params).find_or_create_by(id: params[:repository][:id])
 
     @repository.owner = create_owner
     @repository.save!
@@ -124,7 +124,8 @@ class WebhookController < ApplicationController
   end
 
   def create_event
-    @event = Event.new(action: get_action)
+    # @event = Event.new(action: get_action)
+    @event = Event.new(event_params)
 
     @event.issue = create_issue
     @event.repository = create_repository
