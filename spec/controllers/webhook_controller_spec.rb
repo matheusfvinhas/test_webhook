@@ -15,6 +15,26 @@ RSpec.describe WebhookController, type: :request do
     end
   end
 
+  describe 'GET /statistics' do
+    before { get "/statistics" }
+
+    context 'when statistics exists' do
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end      
+    end
+  end
+
+  describe 'GET /statistics_grouped' do
+    before { get "/statistics_grouped" }
+
+    context 'when statistics_grouped exists' do
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end      
+    end
+  end
+
   describe 'POST /webhook' do
     params = {
       "action": 'closed',
