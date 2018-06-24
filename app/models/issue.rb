@@ -2,7 +2,7 @@
 
 class Issue < ApplicationRecord
   belongs_to :user
-  belongs_to :assignee, class_name: 'User'
+  belongs_to :assignee, class_name: 'User', optional: true
   has_many :events
   has_and_belongs_to_many :labels
   has_many :issue_assignees

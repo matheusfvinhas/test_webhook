@@ -2,34 +2,7 @@
 
 class WebhookController < ApplicationController
   def webhook
-    @user = User.create_with(user_params).find_or_create_by!(id: params[:issue][:user][:id])
-    @assignee = User.create_with(assignee_params).find_or_create_by!(id: params[:issue][:assignee][:id])
-    @assignees = []
-    assignees_params.each { |assignee| @assignees << User.create_with(assignee).find_or_create_by!(id: assignee[:id]) }
-    @labels = []
-    labels_params.each { |label| @labels << Label.create_with(label).find_or_create_by!(id: label[:id]) }
-    @owner = User.create_with(owner_params).find_or_create_by!(id: params[:repository][:owner][:id])
-    @sender = User.create_with(sender_params).find_or_create_by!(id: params[:sender][:id])
-    @repository = Repository.create_with(repository_params).find_or_create_by(id: params[:repository][:id])
-    @repository.owner = @owner
-    @repository.save!
-
-    @issue = Issue.create_with(issue_params).find_or_create_by(id: params[:issue][:id])
-    @issue.update(issue_params)
-    @issue.user = @user
-    @issue.labels = @labels
-    @issue.assignee = @assignee
-    @issue.assignees = @assignees
-    @issue.save
-
-    @event = Event.new(event_params)
-    @action = request.raw_post
-    @event.action = @action[@action.index(':"') + 2..@action.index('",') - 1]
-    @event.issue = @issue
-    @event.repository = @repository
-    @event.sender = @sender
-    @event.save
-
+    create_event
     json_response({})
   end
 
@@ -107,5 +80,64 @@ class WebhookController < ApplicationController
 
   def event_params
     params.permit(:action)
+  end
+
+  def create_issue
+    @issue = Issue.create_with(issue_params).find_or_create_by!(id: params[:issue][:id])
+    # update state and other outer attributes
+    @issue.update!(issue_params)
+
+    @issue.user = create_user
+    @issue.labels = create_labels
+    @issue.assignee = create_assignee
+    @issue.assignees = create_assignees
+    @issue.save!
+    @issue
+  end
+
+  def create_user
+    User.create_with(user_params).find_or_create_by!(id: params[:issue][:user][:id])
+  end
+
+  def create_labels
+    labels_params.map { |label| Label.create_with(label).find_or_create_by!(id: label[:id]) }
+  end
+
+  def create_assignees
+    assignees_params.map { |assignee| User.create_with(assignee).find_or_create_by!(id: assignee[:id]) }
+  end
+
+  def create_assignee
+    params[:issue][:assignee].nil? ? nil : User.create_with(assignee_params).find_or_create_by!(id: params[:issue][:assignee][:id])
+  end
+
+  def create_repository
+    @repository = Repository.create_with(repository_params).find_or_create_by!(id: params[:repository][:id])
+
+    @repository.owner = create_owner
+    @repository.save!
+    @repository
+  end
+
+  def create_owner
+    User.create_with(owner_params).find_or_create_by!(id: params[:repository][:owner][:id])
+  end
+
+  def create_event
+    @event = Event.new(action: get_action)
+
+    @event.issue = create_issue
+    @event.repository = create_repository
+    @event.sender = create_sender
+    @event.save
+  end
+
+  def create_sender
+    User.create_with(sender_params).find_or_create_by!(id: params[:sender][:id])
+  end
+
+  def get_action
+    @request = request.raw_post
+    @request[@request.index(':"') + 2..@request.index('",') - 1]
   end
 end
