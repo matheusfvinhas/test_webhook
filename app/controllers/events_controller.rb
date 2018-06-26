@@ -1,23 +1,15 @@
 # frozen_string_literal: true
 
-class WebhookController < ApplicationController
-  def webhook
+class EventsController < ApplicationController
+  def create
     create_event
     json_response({})
   end
 
-  def events
+  def index
     @events = Event.events(params[:id])
     raise ActiveRecord::RecordNotFound, 'Not Found' if @events.empty?
     json_response(@events)
-  end
-
-  def events_statistics
-    json_response('assigned': Issue.statistics_assigned, 'unassigned': Issue.statistics_grouped)
-  end
-
-  def events_statistics_grouped
-    json_response('assigned': Issue.statistics_assigned, 'unassigned': Issue.statistics_unassigned)
   end
 
   private
@@ -31,19 +23,11 @@ class WebhookController < ApplicationController
   end
 
   def assignees_params
-    if !params[:issue][:assignees].empty?
-      params.require(:issue).require(:assignees).map(&:permit!)
-    else
-      []
-    end
+    !params[:issue][:assignees].empty? ? params.require(:issue).require(:assignees).map(&:permit!) : []
   end
 
   def labels_params
-    if !params[:issue][:labels].empty?
-      params.require(:issue).require(:labels).map(&:permit!)
-    else
-      []
-    end
+    !params[:issue][:labels].empty? ? params.require(:issue).require(:labels).map(&:permit!) : []
   end
 
   def issue_params

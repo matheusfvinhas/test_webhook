@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :user do
-    login { Faker::Internet.user_name(8..12) }
+    login { Faker::Internet.user_name(5..12) }
     id { Faker::Number.number(10) }
     node_id { Faker::Number.number(20) }
     avatar_url { Faker::Internet.url('example.com') }
