@@ -2,48 +2,10 @@
 
 require 'rails_helper'
 
-RSpec.describe WebhookController, type: :request do
+RSpec.describe EventsController, type: :request do
   let!(:event) { create(:event) }
-  let(:issue_number) { event.issue.number }
 
-  describe 'GET /issues/:id/events' do
-    before { get "/issues/#{issue_number}/events" }
-
-    context 'when events exists' do
-      it 'returns status code 200' do
-        expect(response).to have_http_status(200)
-      end
-    end
-
-    context 'when events not exists' do
-      let(:issue_number) { 100 }
-      it 'returns status code 404' do
-        expect(response).to have_http_status(404)
-      end
-    end
-  end
-
-  describe 'GET /statistics' do
-    before { get '/statistics' }
-
-    context 'when statistics exists' do
-      it 'returns status code 200' do
-        expect(response).to have_http_status(200)
-      end
-    end
-  end
-
-  describe 'GET /statistics_grouped' do
-    before { get '/statistics_grouped' }
-
-    context 'when statistics_grouped exists' do
-      it 'returns status code 200' do
-        expect(response).to have_http_status(200)
-      end
-    end
-  end
-
-  describe 'POST /webhook' do
+  describe 'POST /events' do
     params = {
       "action": 'closed',
       "issue": {
@@ -255,7 +217,7 @@ RSpec.describe WebhookController, type: :request do
     }
 
     context 'when the request is valid' do
-      before { post '/webhook', params: params }
+      before { post '/events', params: params }
 
       it 'returns status code 200' do
         expect(response).to have_http_status(200)
